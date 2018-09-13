@@ -1,0 +1,72 @@
+package jason;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import automationCore.DriverFactory;
+
+public class Guru_CreateAccount extends DriverFactory {
+	@Test
+	public void registerGuruAccount() throws Exception {
+		System.out.print("Automation_Session 4");
+		WebDriver getdriver = getDriver();
+		getdriver.manage().window().maximize();
+		driver.get("http://demo.guru99.com/test/newtours/register.php");
+
+		// Input Contact Information
+		WebElement Firstname = driver.findElement(By.name("firstName"));
+		Firstname.sendKeys("Family");
+
+		WebElement Lastname = driver.findElement(By.name("lastName"));
+		Lastname.sendKeys("J1");
+
+		WebElement Phone = driver.findElement(By.name("phone"));
+		Phone.sendKeys("03216582");
+
+		WebElement Email = driver.findElement(By.name("userName"));
+		Email.sendKeys("abcn@gmail.com");
+
+		// input Mailing Information
+		WebElement Address = driver.findElement(By.name("address1"));
+		Address.sendKeys("Ai ma bit");
+
+		WebElement City = driver.findElement(By.name("city"));
+		City.sendKeys("HCM");
+
+		WebElement State = driver.findElement(By.name("state"));
+		State.sendKeys("State 111");
+
+		WebElement Postcode = driver.findElement(By.name("postalCode"));
+		Postcode.sendKeys("777777");
+
+		Select drpCountry = new Select(driver.findElement(By.name("country")));
+		drpCountry.selectByVisibleText("ANTIGUA AND BARBUDA");
+		Thread.sleep(2000);
+		// input User Information
+		WebElement Username = driver.findElement(By.id("email"));
+		Username.sendKeys("Ja1");
+
+		WebElement Password = driver.findElement(By.name("password"));
+		Password.sendKeys("12345678");
+
+		WebElement ConfirmPwd = driver.findElement(By.name("confirmPassword"));
+		ConfirmPwd.sendKeys("12345678");
+
+		Thread.sleep(5000);
+		WebElement Submit = driver.findElement(By.name("submit"));
+		Submit.click();
+
+		String dear = driver.findElement(By.xpath(
+				"/html/body/div[2]/table/tbody/tr/td[2]/table/tbody/tr[4]/td/table/tbody/tr/td[2]/table/tbody/tr[3]/td/p[1]/font/b"))
+				.getText();
+		System.out.print(dear);
+		Assert.assertTrue(dear.equals("Dear Family J1,"));
+		Thread.sleep(5000);
+
+		System.out.print("Login Guru Demo successfully");
+	}
+}
