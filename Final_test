@@ -1,0 +1,126 @@
+package jason;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import automationCore.DriverFactory;
+
+public class Guru_CreateAccount extends DriverFactory {
+	@Test
+	public void registerGuruAccount() throws Exception {
+		String id = "Ja1";
+		String pwd = "12345678";
+		System.out.print("Automation_Session 4");
+		WebDriver getdriver = getDriver();
+		getdriver.manage().window().maximize();
+		driver.get("http://demo.guru99.com/test/newtours/register.php");
+
+		// Input Contact Information
+		WebElement Firstname = driver.findElement(By.name("firstName"));
+		Firstname.sendKeys("Family");
+
+		WebElement Lastname = driver.findElement(By.name("lastName"));
+		Lastname.sendKeys("J1");
+
+		WebElement Phone = driver.findElement(By.name("phone"));
+		Phone.sendKeys("03216582");
+
+		WebElement Email = driver.findElement(By.name("userName"));
+		Email.sendKeys("abcn@gmail.com");
+
+		// input Mailing Information
+		WebElement Address = driver.findElement(By.name("address1"));
+		Address.sendKeys("Ai ma bit");
+
+		WebElement City = driver.findElement(By.name("city"));
+		City.sendKeys("HCM");
+
+		WebElement State = driver.findElement(By.name("state"));
+		State.sendKeys("State 111");
+
+		WebElement Postcode = driver.findElement(By.name("postalCode"));
+		Postcode.sendKeys("777777");
+
+		Select drpCountry = new Select(driver.findElement(By.name("country")));
+		drpCountry.selectByVisibleText("ANTIGUA AND BARBUDA");
+		Thread.sleep(2000);
+		// input User Information
+		WebElement Username = driver.findElement(By.id("email"));
+		Username.sendKeys(id);
+		WebElement Password = driver.findElement(By.name("password"));
+		Password.sendKeys(pwd);
+		WebElement ConfirmPwd = driver.findElement(By.name("confirmPassword"));
+		ConfirmPwd.sendKeys(pwd);
+		Thread.sleep(2000);
+		WebElement Submit = driver.findElement(By.name("submit"));
+		Submit.click();
+
+		String dear = driver.findElement(By.xpath(
+				"/html/body/div[2]/table/tbody/tr/td[2]/table/tbody/tr[4]/td/table/tbody/tr/td[2]/table/tbody/tr[3]/td/p[1]/font/b"))
+				.getText();
+		System.out.println(dear);
+		Assert.assertTrue(dear.equals("Dear Family J1,"));
+		Thread.sleep(5000);
+
+		System.out.println("Register Guru Demo account successfully");
+		System.out.println("Start to register a flight");
+		WebElement flightLink = driver.findElement(By.xpath("/html/body/div[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td[2]/a"));
+		flightLink.click();
+		
+		Select airline = new Select(driver.findElement(By.name("airline")));
+		airline.selectByVisibleText("Unified Airlines");
+		Thread.sleep(2000);
+		
+		WebElement findFlights = driver.findElement(By.name("findFlights"));
+		findFlights.submit();
+		Assert.assertTrue(driver.getCurrentUrl().equals("http://demo.guru99.com/test/newtours/reservation2.php"));
+		
+		//up load file
+		System.out.print("Upload file");
+		WebElement selenium = driver.findElement(By.xpath("//*[@id=\"navbar-brand-centered\"]/ul/li[1]/a"));
+		selenium.click();
+		Thread.sleep(2000);
+		WebElement fileUpload = driver.findElement(By.xpath("//*[@id=\"navbar-brand-centered\"]/ul/li[1]/ul/li[10]/a"));
+		fileUpload.click();
+		Assert.assertTrue(driver.getCurrentUrl().equals("http://demo.guru99.com/test/upload/"));
+		
+/*        WebElement uploadElement = driver.findElement(By.id("uploadfile_0"));
+
+        // enter the file path onto the file-selection input field
+        String fileurl = "file:///Users/Jason/Coding/tien-tru.jpg";
+        uploadElement.sendKeys(fileurl);
+    	Thread.sleep(2000);
+        // check the "I accept the terms of service" check box
+        driver.findElement(By.id("terms")).click();
+
+        // click the "UploadFile" button
+        driver.findElement(By.name("send")).click(); */
+		
+	    driver.get("http://demo.guru99.com/test/guru99home/"); 
+	       // navigates to the page consisting an iframe
+
+	    driver.manage().window().maximize();
+	    driver.switchTo().frame("a077aa5e"); //switching the frame by ID
+
+		System.out.println("********We are switch to the iframe*******");
+  		driver.findElement(By.xpath("html/body/a/img")).click();
+		    //Clicks the iframe
+  		Thread.sleep(2000);
+  	    String oldTab = driver.getWindowHandle();
+  	    driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+  	    ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
+  	    newTab.remove(oldTab);
+  	    driver.switchTo().window(newTab.get(0));
+  	    System.out.println ("Old tab"+oldTab);
+  	    System.out.println ("New tab" + newTab.get(0));
+  	    //System.out.println (driver.getCurrentUrl());
+  		Assert.assertTrue(driver.getCurrentUrl().equals("https://www.guru99.com/live-selenium-project.html"));
+		System.out.println("*********We are done***************");
+	}
+}
