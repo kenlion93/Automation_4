@@ -1,0 +1,47 @@
+package jason;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import automationCore.DriverFactory;
+
+public class drag_drop extends DriverFactory {
+	@Test
+	public void dragDrop() throws Exception {
+		WebDriver getdriver = getDriver();
+		getdriver.manage().window().maximize();
+		driver.get("http://demo.guru99.com/test/drag_drop.html");
+
+		// From
+		WebElement price1From = driver.findElement(By.xpath("//*[@id=\"fourth\"]/a"));
+		WebElement price2From = driver.findElement(By.xpath("//*[@id=\"fourth\"]/a"));
+		WebElement bankFrom = driver.findElement(By.xpath("//*[@id=\"credit2\"]/a"));
+		WebElement saleFrom = driver.findElement(By.xpath("//*[@id=\"credit1\"]/a"));
+
+		// To
+		WebElement bankTo = driver.findElement(By.xpath("//*[@id=\"bank\"]/li"));
+		WebElement price1To = driver.findElement(By.xpath("//*[@id=\"amt7\"]/li"));
+		WebElement saleTo = driver.findElement(By.xpath("//*[@id=\"loan\"]/li"));
+		WebElement price2To = driver.findElement(By.xpath("//*[@id=\"amt8\"]/li"));
+
+		// Using Action class for drag and drop.
+		Actions act = new Actions(driver);
+		act.dragAndDrop(bankFrom, bankTo).build().perform();
+		act.dragAndDrop(price1From, price1To).build().perform();
+		act.dragAndDrop(saleFrom, saleTo).build().perform();
+		act.dragAndDrop(price2From, price2To).build().perform();
+		Thread.sleep(3000);
+		String text1 = driver.findElement(By.xpath("//*[@id=\"t7\"]")).getText();
+		System.out.println(text1);
+		Assert.assertTrue(text1.equals("5000"));
+
+		String text2 = driver.findElement(By.xpath("//*[@id=\"t8\"]")).getText();
+		System.out.println(text2);
+		Assert.assertTrue(text2.equals("5000"));
+		Thread.sleep(3000);
+	}
+}
